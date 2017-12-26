@@ -45,9 +45,18 @@ servidores_pesquisa.append(Servidor('CICLANO DE TAL',["emaildociclano@dominio.co
 Para que os alertas sejam enviados, é necessário informar o endereço de SMTP e a porta utilizada além do respectivo usuário e senha para o serviço. Para isto, basta substituir os valores de email_remetente@dominio.xyz, host_smtp, usuario_smtp e senha_smtp dentro da função enviar_log:
 
 ```python
+    **message = Message(From="__email_remetente@dominio.xyz__", To=emails_destino, charset="utf-8")**
+
+    if extra:
+        message.Subject = "DouFinder - EDIÇÃO EXTRA"
+    else:
+        message.Subject = "DouFinder"
+
+    message.Body = mensagem
+
     try:
-        sender = Mailer('host_smtp', port=25)
-        sender.login('usuario_smtp', 'senha_smtp')
+        **sender = Mailer('__host_smtp__', port=25)**
+        **sender.login('__usuario_smtp__', '__senha_smtp__')**
         sender.send(message)
     except smtplib.SMTPRecipientsRefused as e:
 ```
