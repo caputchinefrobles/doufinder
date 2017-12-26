@@ -17,13 +17,13 @@ a periodicidade da pesquisa.
 O script acessa cada página do Diário Oficial procurando os termos cadastrados de acordo com a seguinte estrutura: 
 
 Servidor:
-	- Nome do interessado 
-	- Lista de e-mails para o envio do alerta de ocorrência
-	- Termos:
-		. Termo 1
-		. Termo 2
-		. Termo 3
-		. ...  
+- Nome do interessado 
+- Lista de e-mails para o envio do alerta de ocorrência
+- Termos:
+* Termo 1
+* Termo 2
+* Termo 3
+* ...  
 
 Um exemplo de como seriam cadastrados os termos:
 
