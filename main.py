@@ -105,8 +105,9 @@ servidores_pesquisa = []
 
 #TODO: incluir o processamento da edição EXTRA
 def processar_pesquisa(jornal, extra=False):
-    #range dos jornais mudou de 1, 2 e 3 para 515, 529 e 530
-    for pagina in range (1,500):
+    #alterando o número máximo de páginas da pesquisa (hoje 26/12, só o jornal 1 teve mais de 
+    #1000 páginas.
+    for pagina in range (1,1100):
        header = {
            'Content-Type':'application/pdf',
            'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
