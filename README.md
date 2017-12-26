@@ -20,10 +20,10 @@ Servidor:
 - Nome do interessado 
 - Lista de e-mails para o envio do alerta de ocorrência
 - Termos:
-* Termo 1
-* Termo 2
-* Termo 3
-* ...  
+  * Termo 1
+  * Termo 2
+  * Termo 3
+  * ...  
 
 Um exemplo de como seriam cadastrados os termos:
 
