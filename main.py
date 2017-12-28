@@ -1,14 +1,10 @@
-import sys,getopt
+import sys,os,getopt
 from configparser import ConfigParser
-from termos import servidores_pesquisa, Pesquisa
-import datetime
+from classes import Pesquisa
+from termos import servidores_pesquisa
+import termos
+from datetime import datetime
 
-#variáveis globais
-hoje = datetime.datetime.now().date()
-str_hoje = hoje.strftime("%d/%m/%Y")
-# corrigido string de captcha que estava incorreta no sistema da imprensa nacional e agora foi corrigida
-
-url = "http://pesquisa.in.gov.br/imprensa/servlet/INPDFViewer?jornal={0}&pagina={1}&data={2}&captchafield=firstAccess"
 
 config_smtp_servidor = ''
 config_smtp_porta = ''
@@ -18,11 +14,13 @@ config_download_dir = ''
 
 def main(argv):
     try:
+
+        #carregando configurações
         config = ConfigParser()
         config_arquivo = os.path.join(os.path.dirname(__file__), 'doufinder.cfg')
 
         if os.path.isfile(config_arquivo):
-            config.read_file(open(config_arquivo),'UTF-8')
+            config.read_file(open(config_arquivo, 'r'),'UTF-8')
         else:
             raise FileNotFoundError
 
@@ -35,6 +33,11 @@ def main(argv):
             raise Exception('Porta SMTP não definida em "doufinder.cfg"')
         else:
             config_smtp_porta = int(config['EMAIL']['SMTP_PORTA'])
+        
+        if not config['EMAIL']['SMTP_REMETENTE']:
+            raise Exception('Remetente SMTP não definido em "doufinder.cfg"')
+        else:
+            config_smtp_remetente = str(config['EMAIL']['SMTP_REMETENTE'])
 
         config_smtp_usuario = str(config['EMAIL']['SMTP_USUARIO'])
         config_smtp_senha = str(config['EMAIL']['SMTP_SENHA'])
@@ -42,8 +45,25 @@ def main(argv):
         if config['OFFLINE']['DOWNLOAD_DIR']:
             config_download_dir = os.path.join(
                 str(config['OFFLINE']['DOWNLOAD_DIR']),
-                hoje.strftime("%d-%m-%Y"))
-        
+                datetime.now().date().strftime("%d-%m-%Y"))
+
+        if (config['JORNAIS']['ID_JORNAL1']):
+            config_id_jornal1 = int(config['JORNAIS']['ID_JORNAL1'])
+
+        if (config['JORNAIS']['ID_JORNAL2']):
+            config_id_jornal2 = int(config['JORNAIS']['ID_JORNAL2'])
+
+        if (config['JORNAIS']['ID_JORNAL3']):
+            config_id_jornal3 = int(config['JORNAIS']['ID_JORNAL3'])
+
+        if (config['JORNAIS']['PAGINA_MIN']):
+            config_pagina_min = int(config['JORNAIS']['PAGINA_MIN'])
+
+        if (config['JORNAIS']['PAGINA_MAX']):
+            config_pagina_max = int(config['JORNAIS']['PAGINA_MAX'])
+
+        #verificando opção para pesquisa na edição extra do jornal
+        #ainda não implementada
         opts, args = getopt.getopt(argv, "e")
 
     except getopt.GetoptError as e:
@@ -66,13 +86,21 @@ def main(argv):
                 print("Erro de argumento\n")
                 sys.exit(2)
     else:
-        pesquisa = Pesquisa(servidores_pesquisa)
-        pesquisa.processar(515)
-        pesquisa.processar(529)
-        pesquisa.processar(530)
 
-        #depois de processada a pesquisa dos termos nos jornais
-        #enviar as ocorrencias para os e-mails informados no cadastro dos termos
-        pesquisa.enviar_ocorrencias()
+        try:
+            pesquisa = Pesquisa(servidores_pesquisa, config_download_dir)
+            if config_id_jornal1:
+                pesquisa.processar(config_id_jornal1, config_pagina_min, config_pagina_max)
+            if config_id_jornal2:
+                pesquisa.processar(config_id_jornal2, config_pagina_min, config_pagina_max)
+            if config_id_jornal3:
+                pesquisa.processar(config_id_jornal3, config_pagina_min, config_pagina_max)
+
+            #depois de processada a pesquisa dos termos nos jornais
+            #enviar as ocorrencias para os e-mails informados no cadastro dos termos
+            pesquisa.enviar_ocorrencias(config_smtp_remetente, config_smtp_servidor, config_smtp_porta, 
+                    config_smtp_usuario, config_smtp_senha)
+        except BaseException:
+            raise
 
 if __name__ == "__main__": main(sys.argv[1:])

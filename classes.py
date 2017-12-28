@@ -1,4 +1,5 @@
 from globais import *
+import datetime
 
 class Servidor:
     def __init__(self, nome = '', emails_notificacao = [], termos_pesquisa = []):
@@ -12,15 +13,22 @@ class Termo:
         self.ocorrencias = []
 
 class Pesquisa:
-    def __init__(self, lista_servidores=None):
-        lista = lista_servidores
 
-    #TODO: incluir o processamento da edição EXTRA
-    def processar(jornal, extra=False):
+    def __init__(self, lista_servidores=None, diretorio_offline=None):
+        self.lista = lista_servidores
+        self.url = "http://pesquisa.in.gov.br/imprensa/servlet/INPDFViewer?jornal={0}&pagina={1}&data={2}&captchafield=firstAccess"
+        self.hoje = datetime.datetime.now().date()
+        self.diretorio_offline = diretorio_offline
+
+    #TODO: 
+    #
+    #       incluir o processamento da edição EXTRA
+    #
+    def processar(self, jornal, pagina_inicio=1, pagina_fim=1100, extra=False):
         
         #alterando o número máximo de páginas da pesquisa (hoje 26/12, só o jornal 1 teve mais de 
         #1000 páginas).
-        for pagina in range (1,1100):
+        for pagina in range (pagina_inicio,pagina_fim):
            header = {
                'Content-Type':'application/pdf',
                'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
@@ -32,26 +40,31 @@ class Pesquisa:
                'Upgrade-Insecure-Requests':'1'}
         
            http = urllib3.PoolManager()
-           full_url = url.format(jornal,pagina,str_hoje)
+           full_url = self.url.format(jornal,pagina,
+                   self.hoje.strftime("%d/%m/%Y"))
+           
+           print ("Seção {0}, Página {1}".format(jornal, pagina))
            print(full_url)
            response = http.request('GET', full_url, headers=header)
     
-           print ("Seção {0}, Página {1}".format(jornal, pagina))
            if 'text/html' not in response.headers['Content-Type'] and response.headers['Content-Encoding'] == 'gzip':
                buff = response.data
                arquivo = io.BytesIO(buff)
-               #print(PyPDF2.PdfFileReader(arquivo).getPage(0).extractText())
-               #texto = PyPDF2.PdfFileReader(arquivo).getPage(0).extractText().upper().replace('\n',' ')
                texto = extrair_texto(arquivo).upper()
            
-               #escrevendo a pagina em disco no diretório de download
-               if not os.path.exists(diretorio_texto):
-                       os.makedirs(diretorio_texto)
-               filename = "%s-%s.%s" % (jornal, pagina, "txt")
-               with open("%s%s" % (diretorio_texto,filename), 'w') as out:
+               if self.diretorio_offline: 
+
+                   #escrevendo a pagina em disco no diretório de download
+                   if not os.path.exists(self.diretorio_offline):
+                           os.makedirs(self.diretorio_offline)
+
+                   filename = "%s-%s.%s" % (jornal, pagina, "txt")
+                   #with open("%s%s" % (diretorio_offline,filename), 'w') as out:
+                   with open(os.path.join(self.diretorio_offline,filename), 'w') as out:
                        out.write(texto)
+                       print("Salvo em %s..." % os.path.realpath(out.name))
         
-               for servidor in servidores_pesquisa:
+               for servidor in self.lista:
                    #pesquisa os termos do servidor interessado
                    for termo in servidor.termos_pesquisa:
     
@@ -66,8 +79,8 @@ class Pesquisa:
 
            else: break
 
-    def enviar_ocorrencias():
-        for servidor in servidores_pesquisa:
+    def enviar_ocorrencias(self, remetente, servidor_smtp, porta, usuario, senha):
+        for servidor in self.lista:
             #caso haja ocorrência de algum termo, montar mensagem e enviar e-mail
             msg = ''
             for termo in servidor.termos_pesquisa:
@@ -77,4 +90,5 @@ class Pesquisa:
                        msg += '\t' + ocorrencia + '\n'
    
             if msg is not '' : 
-                enviar_email(msg, servidor.emails_notificacao, False)
+                enviar_email(msg, servidor.emails_notificacao, 
+                        remetente, servidor_smtp, porta, usuario, senha, False)

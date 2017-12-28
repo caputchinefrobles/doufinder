@@ -9,7 +9,6 @@ import gzip
 import smtplib
 from mailer import Mailer
 from mailer import Message
-from termos import servidores_pesquisa
 
 # https://stackoverflow.com/questions/26494211/extracting-text-from-a-pdf-file-using-pdfminer-in-python
 def extrair_texto(stream):
@@ -38,9 +37,9 @@ def extrair_texto(stream):
     retstr.close()
     return text
 
-def enviar_email(mensagem, emails_destino, extra):
+def enviar_email(mensagem, emails_destino, remetente, servidor, porta, usuario, senha, extra):
     
-    message = Message(From="email_remetente@dominio.xyz", To=emails_destino, charset="utf-8")
+    message = Message(From=remetente, To=emails_destino, charset="utf-8")
 
     if extra:
         message.Subject = "DouFinder - EDIÇÃO EXTRA"
@@ -50,13 +49,14 @@ def enviar_email(mensagem, emails_destino, extra):
     message.Body = mensagem
 
     try:
-        sender = Mailer('smtp_host', port=25)
-        sender.login('usuario_smtp', 'senha_smtp')
+        sender = Mailer(servidor, port=porta)
+        if usuario and senha:
+            sender.login(usuario, senha)
         sender.send(message)
     except smtplib.SMTPRecipientsRefused as e:
         print("ERRO AO ENVIAR LOG: %s" % str(e.recipients))
     except smtplib.SMTPException as e:
         print("ERRO AO ENVIAR LOG: %s" % e)
-    except smtplib.SMTPAuthenticatioError as e:
+    except smtplib.SMTPAuthenticationError as e:
         print("ERRO AO ENVIAR LOG: %s" % e)
 
