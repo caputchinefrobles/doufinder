@@ -14,6 +14,24 @@ Script que pesquisa no Diário Oficial da União termos de interesse e notifica 
 Executar o comando - `/usr/bin/python3 main.py` - ou agendar no crontab para definir
 a periodicidade da pesquisa.
 
+
+`
+Doufinder: Pesquisa termos no Diário Oficial da União e envia ocorrências por e-mail.
+
+Sinopse:
+/usr/bin/python3 main.py [OPÇÕES]...
+
+Descrição:
+        -e Processa pesquisa da edição EXTRA.
+        -o Processa a pesquisa no modo OFFLINE. Opção é ignorada caso o diretório de download não esteja definido no arquivo de configuração.
+           *Esta opção é aplicada quando a pesquisa no modo ONLINE já foi feita no mesmo dia e os arquivos de texto respectivo aos jornais já foram salvos no diretório de downloads.
+
+           *A pesquisa offline não considera as configurações PAGINA_MIN e PAGINA_MAX..
+
+ATENÇÃO:
+        A pesquisa da edição EXTRA do Diário Oficial ainda não foi implementada!
+`
+
 O script acessa cada página do Diário Oficial procurando os termos cadastrados de acordo com a seguinte estrutura: 
 
 Servidor:
@@ -42,21 +60,16 @@ termos = [Termo('CICLANO DE TAL'),
 servidores_pesquisa.append(Servidor('CICLANO DE TAL',["emaildociclano@dominio.com.br"],termos))
 ```
 
-Para que os alertas sejam enviados, é necessário informar o endereço de SMTP e a porta utilizada além do respectivo usuário e senha para o serviço. Para isto, basta substituir os valores de email_remetente@dominio.xyz, host_smtp, usuario_smtp e senha_smtp dentro da função enviar_log:
+## Configuração
 
-```python
-    message = Message(From="email_remetente@dominio.xyz", To=emails_destino, charset="utf-8")
+Antes de executar o script é necessário realizar definir alguns parâmetros no arquivo de configuração doufinder.cfg.  
 
-    if extra:
-        message.Subject = "DouFinder - EDIÇÃO EXTRA"
-    else:
-        message.Subject = "DouFinder"
+Os únicos parâmetros obrigatórios são:
+- `SMTP_SERVIDOR`
+- `SMTP_PORTA`
 
-    message.Body = mensagem
+Sem estes parâmetros não é possível o envio das ocorrências aos interessados na pesquisa. Caso o serviço de SMTP não necessite de autenticação, usuário e senha não serão necessários.
 
-    try:
-        sender = Mailer('host_smtp', port=25)
-        sender.login('usuario_smtp', 'senha_smtp')
-        sender.send(message)
-    except smtplib.SMTPRecipientsRefused as e:
-```
+
+O parâmetro `DOWNLOAD_DIR` é necessário para que a função de pesquisa offline funcione.
+
