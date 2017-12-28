@@ -60,3 +60,15 @@ def enviar_email(mensagem, emails_destino, remetente, servidor, porta, usuario, 
     except smtplib.SMTPAuthenticationError as e:
         print("ERRO AO ENVIAR LOG: %s" % e)
 
+def print_help():
+    print("\nDoufinder: Pesquisa termos no Diário Oficial da União e envia ocorrências por e-mail.\n")
+    print("Sinopse:")
+    print("/usr/bin/python3 main.py [OPÇÕES]...\n")
+    print("Descrição:")
+    print("\t-e Processa pesquisa da edição EXTRA.")
+    print("\t-o Processa a pesquisa no modo OFFLINE. Opção é ignorada caso o diretório de download não esteja definido no arquivo de configuração.")
+    print("\t   *Esta opção é aplicada quando a pesquisa no modo ONLINE já foi feita no mesmo dia e os arquivos de texto respectivo aos jornais já foram salvos no diretório de downloads.\n")
+    print("\t   *A pesquisa offline não considera as configurações PAGINA_MIN e PAGINA_MAX..\n")
+    print("ATENÇÃO:")
+    print("\tA pesquisa da edição EXTRA do Diário Oficial ainda não foi implementada!\n")
+

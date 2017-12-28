@@ -1,9 +1,11 @@
 import sys,os,getopt
 from configparser import ConfigParser
+from datetime import datetime
+
+import termos
 from classes import Pesquisa
 from termos import servidores_pesquisa
-import termos
-from datetime import datetime
+from globais import print_help
 
 
 config_smtp_servidor = ''
@@ -11,6 +13,8 @@ config_smtp_porta = ''
 config_smtp_usuario = ''
 config_smtp_senha = ''
 config_download_dir = ''
+
+flg_offline = False
 
 def main(argv):
     try:
@@ -64,10 +68,11 @@ def main(argv):
 
         #verificando opção para pesquisa na edição extra do jornal
         #ainda não implementada
-        opts, args = getopt.getopt(argv, "e")
+        opts, args = getopt.getopt(argv, "e:o")
 
     except getopt.GetoptError as e:
         print("%s: Erro de argumento\n" % type(e).__name__)
+        print_help()
         sys.exit(2)
     except FileNotFoundError as e:
         print('s%: Não foi possível ler o arquivo "doufinder.cfg"\n' %
@@ -81,26 +86,35 @@ def main(argv):
         for opt, arg in opts:
             if opt =='-e':
                 print("Pesquisa na edição EXTRA ainda não implementada.")
+                print_help()
                 sys.exit(3)
+            elif opt == '-o':
+                flg_offline = True
             else:
                 print("Erro de argumento\n")
+                print_help()
                 sys.exit(2)
-    else:
 
-        try:
-            pesquisa = Pesquisa(servidores_pesquisa, config_download_dir)
-            if config_id_jornal1:
-                pesquisa.processar(config_id_jornal1, config_pagina_min, config_pagina_max)
-            if config_id_jornal2:
-                pesquisa.processar(config_id_jornal2, config_pagina_min, config_pagina_max)
-            if config_id_jornal3:
-                pesquisa.processar(config_id_jornal3, config_pagina_min, config_pagina_max)
+    try:
+        pesquisa = Pesquisa(servidores_pesquisa, config_download_dir, flg_offline)
+        if config_id_jornal1:
+            pesquisa.processar(config_id_jornal1, config_pagina_min, config_pagina_max)
+            # setando modo da pesquisa novamente para o caso de ter sido alterado durante
+            # o processamento
+            pesquisa.offline = flg_offline
+        if config_id_jornal2:
+            pesquisa.processar(config_id_jornal2, config_pagina_min, config_pagina_max)
+            # setando modo da pesquisa novamente para o caso de ter sido alterado durante
+            # o processamento
+            pesquisa.offline = flg_offline
+        if config_id_jornal3:
+            pesquisa.processar(config_id_jornal3, config_pagina_min, config_pagina_max)
 
-            #depois de processada a pesquisa dos termos nos jornais
-            #enviar as ocorrencias para os e-mails informados no cadastro dos termos
-            pesquisa.enviar_ocorrencias(config_smtp_remetente, config_smtp_servidor, config_smtp_porta, 
-                    config_smtp_usuario, config_smtp_senha)
-        except BaseException:
-            raise
+        #depois de processada a pesquisa dos termos nos jornais
+        #enviar as ocorrencias para os e-mails informados no cadastro dos termos
+        pesquisa.enviar_ocorrencias(config_smtp_remetente, config_smtp_servidor, config_smtp_porta, 
+                config_smtp_usuario, config_smtp_senha)
+    except BaseException:
+        raise
 
 if __name__ == "__main__": main(sys.argv[1:])
