@@ -68,7 +68,7 @@ def main(argv):
 
         #verificando opção para pesquisa na edição extra do jornal
         #ainda não implementada
-        opts, args = getopt.getopt(argv, "e:o")
+        opts, args = getopt.getopt(argv, "heo")
 
     except getopt.GetoptError as e:
         print("%s: Erro de argumento\n" % type(e).__name__)
@@ -88,6 +88,9 @@ def main(argv):
                 print("Pesquisa na edição EXTRA ainda não implementada.")
                 print_help()
                 sys.exit(3)
+            elif opt == '-h':
+                print_help()
+                sys.exit(0)
             elif opt == '-o':
                 flg_offline = True
             else:
@@ -114,6 +117,8 @@ def main(argv):
         #enviar as ocorrencias para os e-mails informados no cadastro dos termos
         pesquisa.enviar_ocorrencias(config_smtp_remetente, config_smtp_servidor, config_smtp_porta, 
                 config_smtp_usuario, config_smtp_senha)
+
+        sys.exit(0)
     except BaseException:
         raise
 

@@ -65,6 +65,7 @@ def print_help():
     print("Sinopse:")
     print("/usr/bin/python3 main.py [OPÇÕES]...\n")
     print("Descrição:")
+    print("\t-h Exibe este print de ajuda.")
     print("\t-e Processa pesquisa da edição EXTRA.")
     print("\t-o Processa a pesquisa no modo OFFLINE. Opção é ignorada caso o diretório de download não esteja definido no arquivo de configuração.")
     print("\t   *Esta opção é aplicada quando a pesquisa no modo ONLINE já foi feita no mesmo dia e os arquivos de texto respectivo aos jornais já foram salvos no diretório de downloads.\n")
