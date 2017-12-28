@@ -14,23 +14,7 @@ Script que pesquisa no Diário Oficial da União termos de interesse e notifica 
 Executar o comando - `/usr/bin/python3 main.py` - ou agendar no crontab para definir
 a periodicidade da pesquisa.
 
-
-`
-Doufinder: Pesquisa termos no Diário Oficial da União e envia ocorrências por e-mail.
-
-Sinopse:
-/usr/bin/python3 main.py [OPÇÕES]...
-
-Descrição:
-        -e Processa pesquisa da edição EXTRA.
-        -o Processa a pesquisa no modo OFFLINE. Opção é ignorada caso o diretório de download não esteja definido no arquivo de configuração.
-           *Esta opção é aplicada quando a pesquisa no modo ONLINE já foi feita no mesmo dia e os arquivos de texto respectivo aos jornais já foram salvos no diretório de downloads.
-
-           *A pesquisa offline não considera as configurações PAGINA_MIN e PAGINA_MAX..
-
-ATENÇÃO:
-        A pesquisa da edição EXTRA do Diário Oficial ainda não foi implementada!
-`
+![alt print de ajuda](help.png?raw=true "Doufinder opções")
 
 O script acessa cada página do Diário Oficial procurando os termos cadastrados de acordo com a seguinte estrutura: 
 
