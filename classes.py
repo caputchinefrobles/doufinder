@@ -1,5 +1,6 @@
 from globais import *
 import datetime
+import re
 
 class Servidor:
     def __init__(self, nome = '', emails_notificacao = [], termos_pesquisa = []):

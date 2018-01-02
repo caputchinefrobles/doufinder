@@ -1,11 +1,9 @@
 import urllib3
 import os, io
-import re
 from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
 from pdfminer.converter import TextConverter
 from pdfminer.layout import LAParams
 from pdfminer.pdfpage import PDFPage
-import gzip
 import smtplib
 from mailer import Mailer
 from mailer import Message
