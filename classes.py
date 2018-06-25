@@ -52,12 +52,11 @@ class Pesquisa:
            print ("Seção {0}, Página {1}".format(jornal, pagina))
            print(full_url)
            response = http.request('GET', full_url, headers=header)
-    
-           if 'text/html' not in response.headers['Content-Type'] and response.headers['Content-Encoding'] == 'gzip':
+           if 'text/html' not in response.headers['Content-Type']:
                buff = response.data
                arquivo = io.BytesIO(buff)
                texto = extrair_texto(arquivo).upper()
-           
+
                if self.diretorio_offline: 
 
                    #escrevendo a pagina em disco no diretório de download

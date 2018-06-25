@@ -7,16 +7,18 @@ servidores_pesquisa = []
 #####################################################
 #Ex.:
 
-termos = [Termo('MINISTÉRIO DA TRANSPARÊNCIA'),
-          Termo('PRESIDÊNCIA'),
-          Termo('PORTARIA X')]
+termos = [Termo('SENAR'),
+          Termo('AGRICULTURA'),
+          Termo('CNA'),
+          Termo('Serviço Nacional de Agricultura'),
+          Termo('Confederação Nacional da Agricultura')]
 
-servidores_pesquisa.append(Servidor('FULANO DE TAL',["email1@gmail.com", "email2@email.com"],termos))
+servidores_pesquisa.append(Servidor('Bruno Justino',["bjpraciano@gmail.com"],termos))
 
-termos = [Termo('CICLANO DE TAL'),
-          Termo('TERMO ABC'),
-          Termo('LICITAÇÃO'),
-          Termo('TCU')]
-servidores_pesquisa.append(Servidor('CICLANO DE TAL',["emaildociclano@dominio.com.br"],termos))
+# termos = [Termo('CICLANO DE TAL'),
+#           Termo('TERMO ABC'),
+#           Termo('LICITAÇÃO'),
+#           Termo('TCU')]
+# servidores_pesquisa.append(Servidor('CICLANO DE TAL',["emaildociclano@dominio.com.br"],termos))
 
 #####################################################

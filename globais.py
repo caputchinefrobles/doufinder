@@ -47,7 +47,7 @@ def enviar_email(mensagem, emails_destino, remetente, servidor, porta, usuario, 
     message.Body = mensagem
 
     try:
-        sender = Mailer(servidor, port=porta)
+        sender = smtplib.SMTP(servidor, port=porta)
         if usuario and senha:
             sender.login(usuario, senha)
         sender.send(message)
