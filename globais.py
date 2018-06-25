@@ -7,6 +7,8 @@ from pdfminer.pdfpage import PDFPage
 import smtplib
 from mailer import Mailer
 from mailer import Message
+from email.mime.text import MIMEText as text
+
 
 # https://stackoverflow.com/questions/26494211/extracting-text-from-a-pdf-file-using-pdfminer-in-python
 def extrair_texto(stream):
@@ -47,10 +49,23 @@ def enviar_email(mensagem, emails_destino, remetente, servidor, porta, usuario, 
     message.Body = mensagem
 
     try:
+        fromaddr = ""
+        toaddr = ""
+
         sender = smtplib.SMTP(servidor, port=porta)
         if usuario and senha:
+            sender.ehlo()
+            sender.starttls()
             sender.login(usuario, senha)
-        sender.send(message)
+        # text = msg.as_string()
+        mensagem = message.Body
+        m = text(mensagem)
+
+        m['Subject'] = 'Coleta Diário Oficial 25/06/2018'
+        m['From'] = fromaddr
+        m['To'] = toaddr
+
+        sender.sendmail(fromaddr,toaddr,m.as_string())
     except smtplib.SMTPRecipientsRefused as e:
         print("ERRO AO ENVIAR LOG: %s" % str(e.recipients))
     except smtplib.SMTPException as e:

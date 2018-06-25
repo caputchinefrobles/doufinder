@@ -12,7 +12,11 @@ from globais import print_help
 
 def main(argv):
 
-
+    config_smtp_servidor = 'smtp.gmail.com'
+    config_smtp_porta = '587'
+    config_smtp_usuario = 'bjpraciano@gmail.com'
+    config_smtp_senha = 'Lj%812157amanda'
+    config_download_dir = '/home/bruno'
     flg_offline = False
 
     try:

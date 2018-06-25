@@ -7,9 +7,7 @@ servidores_pesquisa = []
 #####################################################
 #Ex.:
 
-termos = [Termo('SENAR'),
-          Termo('AGRICULTURA'),
-          Termo('CNA'),
+termos = [Termo('AGRICULTURA'),
           Termo('Serviço Nacional de Agricultura'),
           Termo('Confederação Nacional da Agricultura')]
 
