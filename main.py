@@ -61,6 +61,9 @@ def main(argv):
 
         if (config['JORNAIS']['ID_JORNAL3']):
             config_id_jornal3 = int(config['JORNAIS']['ID_JORNAL3'])
+        
+        if (config['JORNAIS']['ID_EDICAO_EXTRA']):
+            config_id_jornal_suplemento = int(config['JORNAIS']['ID_EDICAO_EXTRA'])
 
         if (config['JORNAIS']['PAGINA_MIN']):
             config_pagina_min = int(config['JORNAIS']['PAGINA_MIN'])
@@ -102,18 +105,21 @@ def main(argv):
 
     try:
         pesquisa = Pesquisa(servidores_pesquisa, config_download_dir, flg_offline)
-        if config_id_jornal1:
-            pesquisa.processar(config_id_jornal1, config_pagina_min, config_pagina_max)
-            # setando modo da pesquisa novamente para o caso de ter sido alterado durante
-            # o processamento
-            pesquisa.offline = flg_offline
-        if config_id_jornal2:
-            pesquisa.processar(config_id_jornal2, config_pagina_min, config_pagina_max)
-            # setando modo da pesquisa novamente para o caso de ter sido alterado durante
-            # o processamento
-            pesquisa.offline = flg_offline
-        if config_id_jornal3:
-            pesquisa.processar(config_id_jornal3, config_pagina_min, config_pagina_max)
+        # if config_id_jornal1:
+        #     pesquisa.processar(config_id_jornal1, config_pagina_min, config_pagina_max)
+        #     # setando modo da pesquisa novamente para o caso de ter sido alterado durante
+        #     # o processamento
+        #     pesquisa.offline = flg_offline
+        # if config_id_jornal2:
+        #     pesquisa.processar(config_id_jornal2, config_pagina_min, config_pagina_max)
+        #     # setando modo da pesquisa novamente para o caso de ter sido alterado durante
+        #     # o processamento
+        #     pesquisa.offline = flg_offline
+        # if config_id_jornal3:
+        #     pesquisa.processar(config_id_jornal3, config_pagina_min, config_pagina_max)
+        
+        if config_id_jornal_suplemento:
+            pesquisa.processar(config_id_jornal_suplemento, config_pagina_min, config_pagina_max)
 
         #depois de processada a pesquisa dos termos nos jornais
         #enviar as ocorrencias para os e-mails informados no cadastro dos termos
