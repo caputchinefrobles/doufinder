@@ -80,6 +80,8 @@ class Pesquisa:
                                ocor = 'Jornal: 2, Página: {0}, URL: {1}'.format(pagina, full_url)
                            if jornal == 530:
                                ocor = 'Jornal: 3, Página: {0}, URL: {1}'.format(pagina, full_url)
+                           if jornal == 531:
+                               ocor = 'Suplemento: Página: {0}, URL: {1}'.format(pagina, full_url)
                            termo.ocorrencias.append(ocor)
 
            else: break
@@ -110,6 +112,8 @@ class Pesquisa:
                                     ocor = 'Jornal: 2, Página: {0}, URL: {1}'.format(pagina, full_url)
                                 if jornal == 530:
                                     ocor = 'Jornal: 3, Página: {0}, URL: {1}'.format(pagina, full_url)
+                                if jornal == 531:
+                                    ocor = 'Suplemento: Página: {0}, URL: {1}'.format(pagina, full_url)
                                 termo.ocorrencias.append(ocor)
                 else:
                     continue

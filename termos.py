@@ -11,7 +11,7 @@ termos = [Termo('AGRICULTURA'),
           Termo('Serviço Nacional de Agricultura'),
           Termo('Confederação Nacional da Agricultura')]
 
-servidores_pesquisa.append(Servidor('Bruno Justino',["bjpraciano@gmail.com"],termos))
+servidores_pesquisa.append(Servidor('',[""],termos))
 
 # termos = [Termo('CICLANO DE TAL'),
 #           Termo('TERMO ABC'),
