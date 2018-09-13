@@ -9,6 +9,8 @@ Script que pesquisa no Diário Oficial da União termos de interesse e notifica 
 - urllib3
 - mailer
 
+`pip install pdfminer.six urllib3 mailer`
+
 ## Utilização
 
 Executar o comando - `/usr/bin/python3 main.py` - ou agendar no crontab para definir
