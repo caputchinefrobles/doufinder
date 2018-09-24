@@ -63,6 +63,7 @@ def print_help():
     print("Sinopse:")
     print("/usr/bin/python3 main.py [OPÇÕES]...\n")
     print("Descrição:")
+    print("\t-d 'dd/mm/YYYY' Data escolhida para a pesquisa. Caso este parâmetro não seja fornecido, a data utilizada será a do dia corrente, conforme a configuração de data e hora do computador local.")
     print("\t-h Exibe este print de ajuda.")
     print("\t-e Processa pesquisa da edição EXTRA.")
     print("\t-o Processa a pesquisa no modo OFFLINE. Opção é ignorada caso o diretório de download não esteja definido no arquivo de configuração.")

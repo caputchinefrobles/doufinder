@@ -15,10 +15,15 @@ class Termo:
 
 class Pesquisa:
 
-    def __init__(self, lista_servidores=None, diretorio_offline=None, offline=False):
+    def __init__(self, lista_servidores=None, diretorio_offline=None, offline=False, strdata=None):
         self.lista = lista_servidores
         self.url = "http://pesquisa.in.gov.br/imprensa/servlet/INPDFViewer?jornal={0}&pagina={1}&data={2}&captchafield=firstAccess"
-        self.hoje = datetime.datetime.now().date()
+
+        if strdata is None:
+            self.data_pesquisa = datetime.datetime.now().date().strftime("%d/%m/%Y")
+        else:
+            self.data_pesquisa = strdata
+
         self.diretorio_offline = diretorio_offline
         self.offline = offline
 
@@ -46,8 +51,7 @@ class Pesquisa:
                'Upgrade-Insecure-Requests':'1'}
         
            http = urllib3.PoolManager()
-           full_url = self.url.format(jornal,pagina,
-                   self.hoje.strftime("%d/%m/%Y"))
+           full_url = self.url.format(jornal,pagina, self.data_pesquisa)
            
            print ("Seção {0}, Página {1}".format(jornal, pagina))
            print(full_url)
@@ -95,8 +99,7 @@ class Pesquisa:
                 if '%s-' % str(jornal) in arquivo_pagina.name:
                     flg_jornal_offline_ok = True
                     pagina = arquivo_pagina.name.replace('.txt','').split('-')[1]
-                    full_url = self.url.format(jornal,pagina,
-                        self.hoje.strftime("%d/%m/%Y"))
+                    full_url = self.url.format(jornal,pagina,self.data_pesquisa)
 
                     texto = open(arquivo_pagina.path, 'r').read()
 

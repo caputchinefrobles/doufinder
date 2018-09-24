@@ -18,6 +18,7 @@ def main(argv):
     config_smtp_senha = ''
     config_download_dir = ''
     flg_offline = False
+    data_pesquisa = None
 
     try:
 
@@ -70,7 +71,7 @@ def main(argv):
 
         #verificando opção para pesquisa na edição extra do jornal
         #ainda não implementada
-        opts, args = getopt.getopt(argv, "heo")
+        opts, args = getopt.getopt(argv, "heod")
 
     except getopt.GetoptError as e:
         print("%s: Erro de argumento\n" % type(e).__name__)
@@ -93,6 +94,15 @@ def main(argv):
             elif opt == '-h':
                 print_help()
                 sys.exit(0)
+            elif opt == '-d':
+                if len(args) > 0:
+                    try:
+                        datetime.strptime(args[0],'%d/%m/%Y')
+                        data_pesquisa = args[0]
+                    except ValueError:
+                        print("A data deve estar no formato 'dd/mm/YYYY'")
+                        print_help()
+                        sys.exit(0)
             elif opt == '-o':
                 flg_offline = True
             else:
@@ -101,7 +111,7 @@ def main(argv):
                 sys.exit(2)
 
     try:
-        pesquisa = Pesquisa(servidores_pesquisa, config_download_dir, flg_offline)
+        pesquisa = Pesquisa(servidores_pesquisa, config_download_dir, flg_offline, data_pesquisa)
         if config_id_jornal1:
             pesquisa.processar(config_id_jornal1, config_pagina_min, config_pagina_max)
             # setando modo da pesquisa novamente para o caso de ter sido alterado durante
