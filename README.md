@@ -8,8 +8,9 @@ Script que pesquisa no Diário Oficial da União termos de interesse e notifica 
 - smtplib
 - urllib3
 - mailer
+- chardet (pdfminer)
 
-`pip install pdfminer.six urllib3 mailer`
+`pip install pdfminer.six urllib3 mailer chardet`
 
 ## Utilização
 

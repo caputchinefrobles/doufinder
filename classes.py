@@ -57,7 +57,7 @@ class Pesquisa:
            print(full_url)
            response = http.request('GET', full_url, headers=header)
     
-           if 'text/html' not in response.headers['Content-Type'] and response.headers['Content-Encoding'] == 'gzip':
+           if response.headers['Content-Type'] == 'application/pdf':
                buff = response.data
                arquivo = io.BytesIO(buff)
                texto = extrair_texto(arquivo).upper()
