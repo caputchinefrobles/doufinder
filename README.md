@@ -71,15 +71,25 @@ validar o certificado fornecido pelo resultado do "request".
 
 Para contornar o problema, é necessário incluir a cadeia de certificados de
 https://pesquisa.in.gov.br no arquivo ca-cert.pem utilizado pelo python:
+
     1. Acesse pelo browser a url [https://pesquisa.in.gov.br](https://pesquisa.in.gov.br)
-    1. Extraia a cadeia de certificados
-    1. Abra um shell python e execute os seguintes comantes:
-        1. ```python import certifi```
-        1. ```python certifi```
-        1. ```python print(certifi.where())```
-    1. O resultado deve ser o caminho do arquivo cacert.pem que o python usa.
+
+    2. Extraia a cadeia de certificados
+
+    3. Abra um shell python e execute os seguintes comandos:
+
+```python
+
+import certifi
+certifi
+print(certifi.where())
+
+```
+
+    4. O resultado deve ser o caminho do arquivo cacert.pem que o python usa.
        Ex.: .local/lib/python3.8/site-packages/certifi/cacert.pem
-    1. Adicionar o conteúdo do certificado extraído no passo 2 ao final do
+
+    5. Adicionar o conteúdo do certificado extraído no passo 2 ao final do
        arquivo cacert.pem apontado pelo passo 3.
 
 Executando estes passos de maneira correta, o erro de validação de certificado
