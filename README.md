@@ -9,8 +9,9 @@ Script que pesquisa no Diário Oficial da União termos de interesse e notifica 
 - urllib3
 - mailer
 - chardet (pdfminer)
+- certifi
 
-`pip install pdfminer.six urllib3 mailer chardet`
+`pip install pdfminer.six urllib3 mailer chardet certifi`
 
 ## Utilização
 
@@ -60,3 +61,26 @@ Sem estes parâmetros não é possível o envio das ocorrências aos interessado
 
 O parâmetro `DOWNLOAD_DIR` é necessário para que a função de pesquisa offline funcione.
 
+## ERRO DE CERTIFICADO
+
+Recentemente, o acesso às páginas do jornal do diário oficial foi convertido
+para HTTPS. A cadeia de certificados usada para o host `pesquisa.in.gov.br`
+não está incluida nos certificados do sistema operacional (pode ser que esteja
+incluída nos certificados do browser). Desta forma, o python não consegue
+validar o certificado fornecido pelo resultado do "request".
+
+Para contornar o problema, é necessário incluir a cadeia de certificados de
+https://pesquisa.in.gov.br no arquivo ca-cert.pem utilizado pelo python:
+    1. Acesse pelo browser a url [https://pesquisa.in.gov.br](https://pesquisa.in.gov.br)
+    2. Extraia a cadeia de certificados
+    3. Abra um shell python e execute os seguintes comantes:
+        a. ```python import certifi```
+        b. ```python certifi```
+        c. ```python print(certifi.where())```
+    4. O resultado deve ser o caminho do arquivo cacert.pem que o python usa.
+       Ex.: .local/lib/python3.8/site-packages/certifi/cacert.pem
+    5. Adicionar o conteúdo do certificado extraído no passo 2 ao final do
+       arquivo cacert.pem apontado pelo passo 3.
+
+Executando estes passos de maneira correta, o erro de validação de certificado
+deve ser resolvido. 

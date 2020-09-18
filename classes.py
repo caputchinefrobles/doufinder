@@ -1,6 +1,7 @@
 from globais import *
 import datetime
 import re
+import certifi
 
 class Servidor:
     def __init__(self, nome = '', emails_notificacao = [], termos_pesquisa = []):
@@ -17,7 +18,7 @@ class Pesquisa:
 
     def __init__(self, lista_servidores=None, diretorio_offline=None, offline=False, strdata=None):
         self.lista = lista_servidores
-        self.url = "http://pesquisa.in.gov.br/imprensa/servlet/INPDFViewer?jornal={0}&pagina={1}&data={2}&captchafield=firstAccess"
+        self.url = "https://pesquisa.in.gov.br/imprensa/servlet/INPDFViewer?jornal={0}&pagina={1}&data={2}&captchafield=firstAccess"
 
         if strdata is None:
             self.data_pesquisa = datetime.datetime.now().date().strftime("%d/%m/%Y")
@@ -50,7 +51,7 @@ class Pesquisa:
                'Host':'pesquisa.in.gov.br',
                'Upgrade-Insecure-Requests':'1'}
         
-           http = urllib3.PoolManager()
+           http = urllib3.HTTPSConnectionPool(host="pesquisa.in.gov.br", port=443, ca_certs=certifi.where())
            full_url = self.url.format(jornal,pagina, self.data_pesquisa)
            
            print ("Seção {0}, Página {1}".format(jornal, pagina))
@@ -141,6 +142,6 @@ class Pesquisa:
                     for ocorrencia in termo.ocorrencias:
                        msg += '\t' + ocorrencia + '\n'
    
-            if msg is not '' : 
+            if msg != '' : 
                 enviar_email(msg, servidor.emails_notificacao, 
                         remetente, servidor_smtp, porta, usuario, senha, False)
