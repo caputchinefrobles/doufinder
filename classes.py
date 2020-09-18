@@ -56,8 +56,14 @@ class Pesquisa:
            
            print ("Seção {0}, Página {1}".format(jornal, pagina))
            print(full_url)
-           response = http.request('GET', full_url, headers=header)
-    
+
+           try:
+               response = http.request('GET', full_url, headers=header)
+           except urllib3.exceptions.HostChangedError:
+               continue
+           except:
+               break
+
            if response.headers['Content-Type'] == 'application/pdf':
                buff = response.data
                arquivo = io.BytesIO(buff)
