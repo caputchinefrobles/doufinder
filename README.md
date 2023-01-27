@@ -2,6 +2,10 @@
 
 Script que pesquisa no Diário Oficial da União termos de interesse e notifica por e-mail.
 
+## Disclaimer
+
+Recentemente o diário oficial da união passou por mudanças em sua infraestrutura, e agora tem recursos de segurança do cloudflare ativados. Estes recursos identificam web scrapers e impedem o funcionamento do script doufinder.
+
 ## Dependências
 
 - pdfminer.six (pdfminer com suporte para python 3.x)
